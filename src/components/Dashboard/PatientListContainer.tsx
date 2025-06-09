@@ -36,7 +36,12 @@ const PatientListContainer = () => {
     fetchPatients();
   }, []);
 
-  return <PatientTable patients={patients} />;
+  return (
+    <PatientTable
+      patients={patients}
+      onRowClick={(row) => console.log("Row clicked:", row)}
+    />
+  );
 };
 
 export default PatientListContainer;

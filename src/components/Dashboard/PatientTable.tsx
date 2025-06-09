@@ -6,6 +6,7 @@ import { Typography } from "@mui/material";
 
 interface PatientTableProps {
   patients: PatientRow[];
+  onRowClick?: (row: PatientRow) => void;
 }
 
 const columns: Column<PatientRow>[] = [
@@ -44,8 +45,11 @@ const columns: Column<PatientRow>[] = [
   },
 ];
 
-const PatientTable: React.FC<PatientTableProps> = ({ patients }) => {
-  const handleRowClick = (patient: PatientRow) => {
+const PatientTable: React.FC<PatientTableProps> = ({
+  patients,
+  onRowClick,
+}) => {
+  const defaultRowClick = (patient: PatientRow) => {
     console.log("Clicked patient:", patient);
     // Navigate or open modal here
   };
@@ -54,7 +58,7 @@ const PatientTable: React.FC<PatientTableProps> = ({ patients }) => {
     <GenericTable
       data={patients}
       columns={columns}
-      onRowClick={handleRowClick}
+      onRowClick={onRowClick || defaultRowClick}
       rowsPerPageOptions={[6, 12, 18]}
     />
   );

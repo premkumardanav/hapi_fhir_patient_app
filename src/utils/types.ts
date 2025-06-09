@@ -52,6 +52,7 @@ export interface Patient {
 
 export interface PatientTableProps {
   patients: Patient[];
+  onRowClick?: (row: PatientRow) => void;
 }
 
 export interface Column<T> {
