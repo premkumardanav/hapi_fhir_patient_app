@@ -22,7 +22,7 @@ jobs:
           cc: ${{ secrets.RELEASE_CC_EMAILS }}
           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
           content_type: text/html
-          body: |
+          html_body: |
             <h2>🎉 New Release Published</h2>
             <p><strong>📌 Tag:</strong> ${{ github.event.release.tag_name }}</p>
             <p><strong>📋 Title:</strong> ${{ github.event.release.name }}</p>
