@@ -7,7 +7,6 @@ const fhirApi = axios.create({
   },
 });
 
-// Request Interceptor
 fhirApi.interceptors.request.use(
   (config) => {
     // Add auth headers here if using SMART on FHIR (e.g., access_token)
