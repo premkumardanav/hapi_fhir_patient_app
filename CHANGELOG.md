@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.0...v1.4.1) (2025-06-24)
+
+
+### Bug Fixes
+
+* Removed the unwanted yml files ([b0c90e8](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/b0c90e8d4648de0b1f52b1d560b1d2edd12e393b))
+
 # [1.4.0](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.3.1...v1.4.0) (2025-06-24)
 
 
