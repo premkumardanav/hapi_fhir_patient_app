@@ -1,46 +1,123 @@
-name: Auto Tag and Release
+# name: Auto Tag and Release
+
+# on:
+#   push:
+#     branches:
+#       - production
+
+# jobs:
+#   auto-release:
+#     name: Semantic Release with Slack Notification
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+
+#       - name: Install dependencies
+#         run: |
+#           npm install --save-dev \
+#             semantic-release \
+#             @semantic-release/commit-analyzer \
+#             @semantic-release/release-notes-generator \
+#             @semantic-release/changelog \
+#             @semantic-release/github \
+#             @semantic-release/git \
+#             @semantic-release/exec
+
+#       - name: Run semantic-release
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+#         run: npx semantic-release
+#   send-email:
+#     needs: auto-release
+#     runs-on: ubuntu-latest
+#     if: ${{ needs.auto-release.result == 'success' }}
+#     steps:
+#       - name: Send release email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 465
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: "🚀 New Production Release"
+#           to: ${{ secrets.RELEASE_TO_EMAILS }}
+#           cc: ${{ secrets.RELEASE_CC_EMAILS }}
+#           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
+#           content_type: text/html
+#           html_body: |
+#             <h2>🎉 New Release Published</h2>
+#             <p><strong>📌 Branch:</strong> production</p>
+#             <p><strong>📋 Release Info:</strong> A new release was published using semantic-release.</p>
+#             <p>Check GitHub Releases for full details.</p>
+
+#   notify-on-failure:
+#     needs: send-email
+#     if: failure()
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Send failure notification email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 465
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: "❌ Release Email Failed"
+#           to: ${{ secrets.RELEASE_TO_EMAILS }}
+#           cc: ${{ secrets.RELEASE_CC_EMAILS }}
+#           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
+#           content_type: text/plain
+#           body: |
+#             The release email step failed.
+#             Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+name: Release & Notify
 
 on:
   push:
-    branches:
-      - production
+    branches: [production]
+  release:
+    types: [published]
 
 jobs:
-  auto-release:
-    name: Semantic Release with Slack Notification
+  release:
+    if: github.ref == 'refs/heads/production'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
-        run: |
-          npm install --save-dev \
-            semantic-release \
-            @semantic-release/commit-analyzer \
-            @semantic-release/release-notes-generator \
-            @semantic-release/changelog \
-            @semantic-release/github \
-            @semantic-release/git \
-            @semantic-release/exec
+        run: npm ci
 
-      - name: Run semantic-release
+      - name: Run Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+
   send-email:
-    needs: auto-release
+    needs: release
+    if: |
+      github.event_name == 'release' &&
+      startsWith(github.event.release.tag_name, 'v') &&
+      github.event.release.target_commitish == 'production'
     runs-on: ubuntu-latest
-    if: ${{ needs.auto-release.result == 'success' }}
     steps:
       - name: Send release email
         uses: dawidd6/action-send-mail@v3
@@ -49,34 +126,38 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "🚀 New Production Release"
+          subject: "🚀 New Production Release: ${{ github.event.release.tag_name }}"
           to: ${{ secrets.RELEASE_TO_EMAILS }}
           cc: ${{ secrets.RELEASE_CC_EMAILS }}
           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
           content_type: text/html
           html_body: |
             <h2>🎉 New Release Published</h2>
-            <p><strong>📌 Branch:</strong> production</p>
-            <p><strong>📋 Release Info:</strong> A new release was published using semantic-release.</p>
-            <p>Check GitHub Releases for full details.</p>
+            <p><strong>📌 Tag:</strong> ${{ github.event.release.tag_name }}</p>
+            <p><strong>📋 Title:</strong> ${{ github.event.release.name }}</p>
+            <p><strong>📝 Description:</strong></p>
+            <pre>${{ github.event.release.body }}</pre>
+            <p><strong>🔗 View on GitHub:</strong> <a href="${{ github.event.release.html_url }}">Click here</a></p>
 
   notify-on-failure:
     needs: send-email
     if: failure()
     runs-on: ubuntu-latest
     steps:
-      - name: Send failure notification email
+      - name: Send failure notification
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "❌ Release Email Failed"
+          subject: "❌ Release Email Failed: ${{ github.event.release.tag_name }}"
           to: ${{ secrets.RELEASE_TO_EMAILS }}
           cc: ${{ secrets.RELEASE_CC_EMAILS }}
           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
           content_type: text/plain
           body: |
-            The release email step failed.
-            Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Email job failed for release tag "${{ github.event.release.tag_name }}".
+
+            Check workflow logs:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
