@@ -4,6 +4,7 @@ import LoginPage from "../components/auth/LoginPage";
 import Layout from "../components/Layout";
 import { useAppSelector } from "../redux/hooks";
 import HomePage from "../components/Dashboard/HomePage";
+import PatientDetail from "../components/Dashboard/PatientDetail";
 import OopsPage from "../components/auth/OppsPage";
 
 const AppRoutes = () => {
@@ -19,6 +20,10 @@ const AppRoutes = () => {
         <Route
           path="/dashboard"
           element={isLoggedIn ? <HomePage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/patient/:id"
+          element={isLoggedIn ? <PatientDetail /> : <Navigate to="/" />}
         />
       </Route>
       <Route path="*" element={<OopsPage />} />
