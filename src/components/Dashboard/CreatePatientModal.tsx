@@ -29,8 +29,6 @@ interface PatientFormData {
   familyName: string;
   gender: string;
   birthDate: string;
-  identifier: string;
-  identifierUse: string;
   addressLine: string;
   city: string;
   state: string;
@@ -49,8 +47,6 @@ const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
     familyName: "",
     gender: "",
     birthDate: "",
-    identifier: "",
-    identifierUse: "usual",
     addressLine: "",
     city: "",
     state: "",
@@ -88,14 +84,6 @@ const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
         ],
         gender: formData.gender,
         birthDate: formData.birthDate,
-        identifier: formData.identifier
-          ? [
-              {
-                use: formData.identifierUse,
-                value: formData.identifier,
-              },
-            ]
-          : undefined,
         address: formData.addressLine
           ? [
               {
@@ -133,8 +121,6 @@ const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
       familyName: "",
       gender: "",
       birthDate: "",
-      identifier: "",
-      identifierUse: "usual",
       addressLine: "",
       city: "",
       state: "",
@@ -201,34 +187,6 @@ const CreatePatientModal: React.FC<CreatePatientModalProps> = ({
                 onChange={(e) => handleInputChange("birthDate", e.target.value)}
                 InputLabelProps={{ shrink: true }}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Identifier"
-                value={formData.identifier}
-                onChange={(e) =>
-                  handleInputChange("identifier", e.target.value)
-                }
-                placeholder="e.g., MR123456"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Identifier Use</InputLabel>
-                <Select
-                  value={formData.identifierUse}
-                  label="Identifier Use"
-                  onChange={(e) =>
-                    handleInputChange("identifierUse", e.target.value)
-                  }
-                >
-                  <MenuItem value="usual">Usual</MenuItem>
-                  <MenuItem value="official">Official</MenuItem>
-                  <MenuItem value="temp">Temporary</MenuItem>
-                  <MenuItem value="secondary">Secondary</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
 
             <Grid item xs={12}>
