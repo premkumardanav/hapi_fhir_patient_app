@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.3.0...v1.3.1) (2025-06-24)
+
+
+### Bug Fixes
+
+* Made stage type optional ([bc5e76f](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/bc5e76f1ecf741cdd50e577f5c7e9afa911bb1b7))
+
 # [1.3.0](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.2.0...v1.3.0) (2025-06-24)
 
 
