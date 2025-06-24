@@ -1,55 +1,55 @@
-name: Notify on Production Release
+# name: Notify on Production Release
 
-on:
-  release:
-    types: [published]
+# on:
+#   release:
+#     types: [published]
 
-jobs:
-  send-email:
-    if: startsWith(github.event.release.tag_name, 'v') && github.event.release.target_commitish == 'production'
-    runs-on: ubuntu-latest
+# jobs:
+#   send-email:
+#     if: startsWith(github.event.release.tag_name, 'v') && github.event.release.target_commitish == 'production'
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Send release email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "🚀 New Production Release: ${{ github.event.release.tag_name }}"
-          to: ${{ secrets.RELEASE_TO_EMAILS }}
-          cc: ${{ secrets.RELEASE_CC_EMAILS }}
-          from: ${{ secrets.RELEASE_FROM_DISPLAY }}
-          content_type: text/html
-          html_body: |
-            <h2>🎉 New Release Published</h2>
-            <p><strong>📌 Tag:</strong> ${{ github.event.release.tag_name }}</p>
-            <p><strong>📋 Title:</strong> ${{ github.event.release.name }}</p>
-            <p><strong>📝 Description:</strong></p>
-            <pre>${{ github.event.release.body }}</pre>
-            <p><strong>🔗 View on GitHub:</strong> <a href="${{ github.event.release.html_url }}">Click here</a></p>
+#     steps:
+#       - name: Send release email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 465
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: "🚀 New Production Release: ${{ github.event.release.tag_name }}"
+#           to: ${{ secrets.RELEASE_TO_EMAILS }}
+#           cc: ${{ secrets.RELEASE_CC_EMAILS }}
+#           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
+#           content_type: text/html
+#           html_body: |
+#             <h2>🎉 New Release Published</h2>
+#             <p><strong>📌 Tag:</strong> ${{ github.event.release.tag_name }}</p>
+#             <p><strong>📋 Title:</strong> ${{ github.event.release.name }}</p>
+#             <p><strong>📝 Description:</strong></p>
+#             <pre>${{ github.event.release.body }}</pre>
+#             <p><strong>🔗 View on GitHub:</strong> <a href="${{ github.event.release.html_url }}">Click here</a></p>
 
-  notify-on-failure:
-    needs: send-email
-    if: failure()
-    runs-on: ubuntu-latest
+#   notify-on-failure:
+#     needs: send-email
+#     if: failure()
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Send failure notification email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "❌ Release Email Failed: ${{ github.event.release.tag_name }}"
-          to: ${{ secrets.RELEASE_TO_EMAILS }}
-          cc: ${{ secrets.RELEASE_CC_EMAILS }}
-          from: ${{ secrets.RELEASE_FROM_DISPLAY }}
-          content_type: text/plain
-          body: |
-            The GitHub Actions workflow for release tag "${{ github.event.release.tag_name }}" failed.
+#     steps:
+#       - name: Send failure notification email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 465
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: "❌ Release Email Failed: ${{ github.event.release.tag_name }}"
+#           to: ${{ secrets.RELEASE_TO_EMAILS }}
+#           cc: ${{ secrets.RELEASE_CC_EMAILS }}
+#           from: ${{ secrets.RELEASE_FROM_DISPLAY }}
+#           content_type: text/plain
+#           body: |
+#             The GitHub Actions workflow for release tag "${{ github.event.release.tag_name }}" failed.
 
-            Please check the workflow logs here:
-            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+#             Please check the workflow logs here:
+#             https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
