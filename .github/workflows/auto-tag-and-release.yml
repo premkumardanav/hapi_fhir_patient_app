@@ -37,3 +37,46 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: npx semantic-release
+  send-email:
+    needs: auto-release
+    runs-on: ubuntu-latest
+    if: ${{ needs.auto-release.result == 'success' }}
+    steps:
+      - name: Send release email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "🚀 New Production Release"
+          to: ${{ secrets.RELEASE_TO_EMAILS }}
+          cc: ${{ secrets.RELEASE_CC_EMAILS }}
+          from: ${{ secrets.RELEASE_FROM_DISPLAY }}
+          content_type: text/html
+          html_body: |
+            <h2>🎉 New Release Published</h2>
+            <p><strong>📌 Branch:</strong> production</p>
+            <p><strong>📋 Release Info:</strong> A new release was published using semantic-release.</p>
+            <p>Check GitHub Releases for full details.</p>
+
+  notify-on-failure:
+    needs: send-email
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure notification email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "❌ Release Email Failed"
+          to: ${{ secrets.RELEASE_TO_EMAILS }}
+          cc: ${{ secrets.RELEASE_CC_EMAILS }}
+          from: ${{ secrets.RELEASE_FROM_DISPLAY }}
+          content_type: text/plain
+          body: |
+            The release email step failed.
+            Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
