@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.3.1...v1.4.0) (2025-06-24)
+
+
+### Features
+
+* updated auto tag and release yml file ([dd908f9](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/dd908f9487176e4cb7abbb62300deeba56ce3404))
+
 ## [1.3.1](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.3.0...v1.3.1) (2025-06-24)
 
 
