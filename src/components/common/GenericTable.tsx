@@ -15,9 +15,12 @@ import type { GenericTableProps } from "../../utils/types";
 const GenericTable = <T extends { id?: string | number }>({
   data,
   columns,
-  rowsPerPageOptions = [5, 10, 25],
-  initialRowsPerPage = 5,
+  rowsPerPageOptions = [10, 15, 20],
+  initialRowsPerPage = 10,
   onRowClick,
+  stickyHeader = false,
+  maxHeight,
+  showPagination = true,
 }: GenericTableProps<T>) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
@@ -33,26 +36,43 @@ const GenericTable = <T extends { id?: string | number }>({
     setPage(0);
   };
 
-  const paginatedData = data.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  // If pagination is disabled, show all data
+  const tableData = showPagination
+    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    : data;
 
   return (
-    <Paper>
-      <TableContainer>
-        <Table>
+    <Paper
+      sx={{
+        height: maxHeight || "auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <TableContainer sx={{ flex: 1, maxHeight: maxHeight || "none" }}>
+        <Table stickyHeader={stickyHeader}>
           <TableHead>
             <TableRow>
               {columns?.map((col) => (
-                <TableCell key={col.key.toString()} align={col.align || "left"}>
+                <TableCell
+                  key={col.key.toString()}
+                  align={col.align || "left"}
+                  sx={{
+                    backgroundColor: stickyHeader
+                      ? "background.paper"
+                      : "inherit",
+                    position: stickyHeader ? "sticky" : "static",
+                    top: 0,
+                    zIndex: 1,
+                  }}
+                >
                   <b>{col.label}</b>
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedData?.map((row, rowIndex) => (
+            {tableData?.map((row, rowIndex) => (
               <TableRow
                 key={row.id || rowIndex}
                 hover
@@ -72,15 +92,17 @@ const GenericTable = <T extends { id?: string | number }>({
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        component="div"
-        count={data.length}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={rowsPerPageOptions}
-      />
+      {showPagination && (
+        <TablePagination
+          component="div"
+          count={data.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={rowsPerPageOptions}
+        />
+      )}
     </Paper>
   );
 };
