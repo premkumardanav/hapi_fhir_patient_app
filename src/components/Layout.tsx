@@ -36,7 +36,7 @@ const Layout = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Patient Management Dashboard
+            Patient Management Dashboard OVerview
           </Typography>
           <IconButton color="inherit" onClick={handleToggle}>
             {mode === "dark" ? <Brightness4Icon /> : <Brightness7Icon />}
