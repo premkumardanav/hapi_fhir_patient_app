@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.1...v1.4.2) (2025-08-01)
+
+
+### Bug Fixes
+
+* Corrected the title in the Layout component to "Patient Management Dashboard OVerview" ([c9d4353](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/c9d4353279c714ad8f861d3c78a680ed59862480))
+
 ## [1.4.1](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.0...v1.4.1) (2025-06-24)
 
 
