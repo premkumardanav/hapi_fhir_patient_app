@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.5.0...v1.5.1) (2025-08-01)
+
+
+### Bug Fixes
+
+* Improve value rendering logic in GenericTable component ([9af7063](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/9af7063854108fc20d214c3377a9236f932145ff))
+
 # [1.5.0](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.4...v1.5.0) (2025-08-01)
 
 
