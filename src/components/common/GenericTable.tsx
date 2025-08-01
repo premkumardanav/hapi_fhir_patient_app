@@ -78,10 +78,19 @@ const GenericTable = <T extends { id?: string | number }>({
                 style={{ cursor: onRowClick ? "pointer" : "default" }}
               >
                 {columns.map((col, colIndex) => {
-                  const value = (row as any)[col.key];
+                  const value = row[col.key as keyof T];
                   return (
                     <TableCell key={colIndex} align={col.align || "left"}>
-                      {col.render ? col.render(value, row, rowIndex) : value}
+                      {col.render
+                        ? col.render(value, row, rowIndex)
+                        : typeof value === "string" ||
+                          typeof value === "number" ||
+                          typeof value === "boolean" ||
+                          React.isValidElement(value)
+                        ? (value as React.ReactNode)
+                        : value !== undefined && value !== null
+                        ? String(value)
+                        : null}
                     </TableCell>
                   );
                 })}
