@@ -35,7 +35,6 @@ const GenericTable = <T extends { id?: string | number }>({
     setPage(0);
   };
 
-  // If pagination is disabled, show all data
   const tableData = showPagination
     ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     : data;
