@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.5.1...v1.6.0) (2025-08-01)
+
+
+### Features
+
+* Update title in Layout component for clarity ([e251fb5](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/e251fb5eb40356ea7040457e82ffa75cce3ebb9c))
+
 ## [1.5.1](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.5.0...v1.5.1) (2025-08-01)
 
 
