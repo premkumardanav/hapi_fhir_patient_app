@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.2...v1.4.3) (2025-08-01)
+
+
+### Bug Fixes
+
+* Corrected the spelling of "Overview" in the Layout component title ([68191be](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/68191be80dcce88a1661d2a5035083bbb2001fb0))
+
 ## [1.4.2](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.1...v1.4.2) (2025-08-01)
 
 
