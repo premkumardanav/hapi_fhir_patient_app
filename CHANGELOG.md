@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.4...v1.5.0) (2025-08-01)
+
+
+### Features
+
+* Remove unnecessary comment from GenericTable component ([c3699a3](https://github.com/premkumardanav/hapi_fhir_patient_app/commit/c3699a30502d3b86966db3e8c0398196b42bb2c4))
+
 ## [1.4.4](https://github.com/premkumardanav/hapi_fhir_patient_app/compare/v1.4.3...v1.4.4) (2025-08-01)
 
 
